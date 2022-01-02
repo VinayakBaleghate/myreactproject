@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import Inputdata from './Inputdata';
 import ReactDOM from "react-dom";
 
 
 function Contact() {
 	const [inputs, setInputs] = useState({});
+	const [items, setItems] = useState([]);
 
 	const handleChange = (event) => {
 		const name = event.target.name;
@@ -11,16 +13,25 @@ function Contact() {
 		setInputs(values => ({...values, [name]: value}))
 	}
 
+	const deleteItem = (index) => {
+		if (index > -1) {
+			items.splice(index, 1);
+		}
+		setItems([...items]);
+	}
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(inputs);
+		setItems([...items, inputs]);
+		setInputs({});
+		
 	}
 
 	return (
 		<div className="contact main-content">
 			<div className="row mt-5">
-				<div className="col-md-4 col-sm-12"></div>
-				<div className="col-md-4 col-sm-12 card p-4">
+				<div className="col-md-2 col-sm-12"></div>
+				<div className="col-md-4 col-sm-12 card p-4 mr-3">
 					<form onSubmit={handleSubmit}>
 						<div className="form-group">
 							<label>Enter your name:</label>
@@ -33,7 +44,10 @@ function Contact() {
 						<button type="submit" className="btn btn-primary">Submit</button>
 					</form>		
 				</div>
-				<div className="col-md-4 col-sm-12"></div>
+				<div className="col-md-5 col-sm-12 card p-4">
+					<Inputdata items={items} deleteItem={deleteItem}  />
+				</div>
+				<div className="col-md-1 col-sm-12"></div>
 			</div>
 		</div>
 	);
